@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>OpenID Connect MVC Client 
+@if (@Context.User.Identity.IsAuthenticated)
+{
+    <span style="font-size:20px"> - Hi, @Context.User.Identity.Name!</span>
+}
+</h2> 
+
+<partial name="_PagesAndApisPartial" />

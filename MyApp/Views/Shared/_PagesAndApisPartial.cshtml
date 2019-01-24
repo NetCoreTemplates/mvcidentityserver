@@ -1,0 +1,98 @@
+<div class="row" style="margin-top:40px">
+    <div class="col-lg-6">
+        <h3>Public APIs and Pages</h3>
+        
+        <ul>
+            <li><a href="/Home">/Home</a> - Home MVC Page</li>
+        </ul>
+        
+        <form action="/hello">
+            <h4>/hello ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>
+        </form>
+        
+        <h3>Delegated Auth Pages</h3>
+        
+        <ul>
+            <li><a href="/Home/CallWebApi">/Home/CallWebApi</a> - MVC Page calling <a href="http://localhost:5001/webapi-identity">/webapi-identity</a> Web API</li>
+            <li><a href="/Home/CallServiceStack">/Home/CallServiceStack</a> - MVC Page calling <a href="http://localhost:5001/servicestack-identity">/servicestack-identity</a> Service</li>
+            <li><a href="/Home/CallServiceStack">/Home/CallServiceClient</a> - MVC Page calling <a href="http://localhost:5001/servicestack-identity">/servicestack-identity</a> Service</li>
+        </ul>
+
+    </div>
+    <div class="col-lg-6">
+        <h3>Secure APIs and Pages</h3>
+        
+        <ul>
+            <li><a href="/Home/RequiresAuth">/Home/RequiresAuth</a> - Requires Authentication MVC Page</li>
+            <li><a href="/Home/RequiresScope">/Home/RequiresScope</a> - Requires <b>profile</b> Scope MVC Page</li>
+            <li><a href="/Home/RequiresRole">/Home/RequiresRole</a> - Requires <b>Manager</b> Role MVC Page</li>
+            <li><a href="/Home/RequiresAdmin">/Home/RequiresAdmin</a> - Requires <b>Admin</b> User MVC Page</li>
+        </ul>
+        
+        <form action="/requiresauth">
+            <h4>/requiresauth ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <form action="/requiresscope">
+            <h4>/requiresscope ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <form action="/requiresrole">
+            <h4>/requiresrole ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+        <form action="/requiresadmin">
+            <h4>/requiresadmin ServiceStack API</h4>
+            <label>Name: </label>
+            <input type="text" class="txtName" name="Name" style="margin: 10px" />
+            <span class="apiurl"></span>
+            <div class="result" style="margin-left: 60px"></div>            
+        </form>
+        
+    </div>
+</div>
+
+<script>
+window.addEventListener('load', function() {
+    function callApi() {
+        var $result = $(this).parent().find('.result');
+        var $apiurl = $(this).parent().find('.apiurl');
+        if (this.value) {
+            var apiUrl =  $(this).parent().attr('action') + "/" + encodeURIComponent(this.value);
+            $apiurl.html('<a href="' + apiUrl + '">' + apiUrl + '</a>');
+            $.getJSON(apiUrl)
+                .then(function (r) {
+                    $result.html(r.result);
+                }).fail(function (jq, jqStatus, statusText) {
+                    var err, errMsg = "The request failed with: " + statusText;
+                    try {
+                        err = JSON.parse(jq.responseText);
+                        errMsg = err.message || errMsg;
+                    } catch (e) {
+                    }
+                    $result.html('<div class="error">' + errMsg + "</div>");
+                });
+        } else {
+            $result.add($apiurl).html("");
+        }
+    }
+        
+    $(".txtName").keyup(callApi).each(callApi);
+});
+</script>
