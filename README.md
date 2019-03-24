@@ -2,13 +2,13 @@
 
 .NET Core 2.1 MVC Website integrated with ServiceStack using IdentityServer4 Auth
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcidentityserver.png)](http://mvcidentityserver.web-templates.io/)
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcidentityserver.png)
 
 > IdentityServer4 Login
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcidentityserver-is4.png)](http://mvcidentityserver.web-templates.io/)
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcidentityserver-is4.png)
 
-> Browse [source code](https://github.com/NetCoreTemplates/mvcidentityserver), view live demo [mvcidentityserver.web-templates.io](http://mvcidentityserver.web-templates.io) and install with the `web` dotnet tool:
+> Browse [source code](https://github.com/NetCoreTemplates/mvcidentityserver) and install with the `web` dotnet tool:
 
     $ dotnet tool install -g web
 
