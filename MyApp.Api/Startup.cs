@@ -76,10 +76,8 @@ namespace MyApp.Api
     {
         public object Any(GetIdentity request)
         {
-            var user = ((HttpRequest)Request.OriginalRequest).HttpContext.User;
-
             return new GetIdentityResponse {
-                Claims = user.Claims.Map(x => new Property {Name = x.Type, Value = x.Value}),
+                Claims = Request.GetClaims().Map(x => new Property { Name = x.Type, Value = x.Value }),
                 Session = SessionAs<AuthUserSession>(),
             };
         }
