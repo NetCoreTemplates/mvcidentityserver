@@ -7,18 +7,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ServiceStack" Version="5.*" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="Views\Shared\json.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ServiceStack, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Users\mythz\.nuget\packages\servicestack\5.4.1\lib\netstandard2.0\ServiceStack.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
