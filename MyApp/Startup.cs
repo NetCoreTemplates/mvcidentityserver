@@ -17,12 +17,13 @@ using ServiceStack.Configuration;
 
 namespace MyApp
 {
-    public class Startup
+    public class Startup : ModularStartup
     {
-        public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+        public Startup(IConfiguration configuration) : base(configuration){}
 
-        public void ConfigureServices(IServiceCollection services)
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public new void ConfigureServices(IServiceCollection services)
         {
             System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
