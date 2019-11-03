@@ -14,6 +14,10 @@
 
     $ web new mvcidentityserver ProjectName
 
+### Docs
+
+See [Using IdentityServer4 Auth docs](https://docs.servicestack.net/authentication-identityserver) for more info about this template.
+
 ### OAuth Setup
 
 Replace the `oauth.*` App settings with your own in `appsettings.Development.json` for local development and `appsettings.json` for production deployments.
