@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Funq;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
@@ -17,9 +19,10 @@ using ServiceStack.Configuration;
 
 namespace MyApp
 {
-    public class Startup : ModularStartup
+    public class Startup
     {
-        public Startup(IConfiguration configuration) : base(configuration){}
+        public IConfiguration Configuration { get; set; }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -27,7 +30,7 @@ namespace MyApp
         {
             System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddMvc();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
 
             services.AddAuthentication(options =>
                 {
@@ -74,7 +77,7 @@ namespace MyApp
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -153,9 +156,10 @@ namespace MyApp
         string[] AdminRoles { get; }
         public AdminRolesClaimAction(params string[] adminRoles) : base("role", null) => AdminRoles = adminRoles;
 
-        public override void Run(JObject userData, ClaimsIdentity identity, string issuer)
+//        public override void Run(JObject userData, ClaimsIdentity identity, string issuer)
+        public override void Run(JsonElement userData, ClaimsIdentity identity, string issuer)
         {
-            if (!HasAdminRole(userData)) return;
+            if (!HasAdminRole(JObject.Parse(userData.GetRawText()))) return;
             foreach (var role in AdminRoles)
             {
                 identity.AddClaim(new Claim("role", role));

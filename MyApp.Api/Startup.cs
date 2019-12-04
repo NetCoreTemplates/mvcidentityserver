@@ -14,14 +14,14 @@ namespace MyApp.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
-        public void ConfigureServices(IServiceCollection services)
+        public new void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore()
+            services.AddMvcCore(options => options.EnableEndpointRouting = false)
                 .AddAuthorization()
-                .AddJsonFormatters();
+                .AddNewtonsoftJson();
 
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options => {
@@ -32,7 +32,7 @@ namespace MyApp.Api
                 });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public new void Configure(IApplicationBuilder app)
         {
             app.UseAuthentication();
 

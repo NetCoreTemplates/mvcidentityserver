@@ -4,6 +4,7 @@
 using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using ServiceStack;
 
 namespace MyApp.Api
 {
