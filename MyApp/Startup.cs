@@ -26,11 +26,15 @@ namespace MyApp
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public new void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
+#if DEBUG
+            services.AddMvc(options => options.EnableEndpointRouting = false).AddRazorRuntimeCompilation();
+#else
             services.AddMvc(options => options.EnableEndpointRouting = false);
+#endif
+
+            System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services.AddAuthentication(options =>
                 {
