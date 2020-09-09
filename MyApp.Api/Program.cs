@@ -21,7 +21,7 @@ namespace MyApp.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseModularStartup<Startup>();
+                    builder.UseStartup<Startup>();
                 });
     }
 }
