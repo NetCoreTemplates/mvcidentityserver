@@ -88,10 +88,19 @@ namespace IdentityServer
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                     options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-                    options.SaveTokens = true;
 
                     options.Authority = "https://demo.identityserver.io/";
-                    options.ClientId = "implicit";
+                    options.ClientId = "login";
+                    options.ResponseType = "id_token";
+                    options.SaveTokens = true;
+
+                    options.Scope.Add(IdentityServerConstants.StandardScopes.OpenId);
+                    options.Scope.Add(IdentityServerConstants.StandardScopes.Profile);
+                    options.Scope.Add(IdentityServerConstants.StandardScopes.Email);
+
+                    options.CallbackPath = "/signin-aholdibm";
+                    options.SignedOutCallbackPath = "/signout-callback-idsrv";
+                    options.RemoteSignOutPath = "/signout-idsrv";
                     
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
