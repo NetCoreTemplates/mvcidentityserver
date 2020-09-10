@@ -18,7 +18,7 @@ namespace MyApp.Tests
             var client = new HttpClient();
 
             // discover endpoints from metadata
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
@@ -52,7 +52,7 @@ namespace MyApp.Tests
             var client = new HttpClient();
 
             // discover endpoints from metadata
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5000");
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
@@ -88,7 +88,7 @@ namespace MyApp.Tests
             apiClient.SetBearerToken(accessToken);
             
             // Web API (JSON)
-            var response = await apiClient.GetAsync("http://localhost:5001/webapi-identity");
+            var response = await apiClient.GetAsync("https://localhost:5001/webapi-identity");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
@@ -103,7 +103,7 @@ namespace MyApp.Tests
             // ServiceStack API (JSON)
             apiClient.DefaultRequestHeaders.Accept
                 .Add(new MediaTypeWithQualityHeaderValue(MimeTypes.Json)); // or call /servicestack-identity.json
-            response = await apiClient.GetAsync("http://localhost:5001/servicestack-identity");
+            response = await apiClient.GetAsync("https://localhost:5001/servicestack-identity");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
@@ -116,7 +116,7 @@ namespace MyApp.Tests
             }
 
             // ServiceStack Service Client (Typed DTOs)
-            var serviceClient = new JsonServiceClient("http://localhost:5001/") {
+            var serviceClient = new JsonServiceClient("https://localhost:5001/") {
                 BearerToken = accessToken
             };
 

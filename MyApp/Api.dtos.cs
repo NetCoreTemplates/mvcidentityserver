@@ -2,7 +2,7 @@
 Date: 2019-01-23 12:03:39
 Version: 5.41
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://localhost:5001
+BaseUrl: https://localhost:5001
 
 GlobalNamespace: MyApp
 //MakePartial: True

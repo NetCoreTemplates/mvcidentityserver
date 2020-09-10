@@ -36,6 +36,7 @@ namespace MyApp
 
             System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+            services.ConfigureNonBreakingSameSiteCookies();
             services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = "Cookies";
@@ -46,7 +47,7 @@ namespace MyApp
                 {
                     options.SignInScheme = "Cookies";
 
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = "https://localhost:5000";
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "mvc";
@@ -92,6 +93,7 @@ namespace MyApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCookiePolicy();
             app.UseAuthentication();
 
             app.UseStaticFiles();
