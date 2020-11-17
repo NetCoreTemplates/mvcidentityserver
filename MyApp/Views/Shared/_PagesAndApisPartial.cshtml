@@ -80,7 +80,7 @@ window.addEventListener('load', function() {
                 .then(function (r) {
                     $result.html(r.result);
                 }).fail(function (jq, jqStatus, statusText) {
-                    var err, errMsg = "The request failed with: " + statusText;
+                    var err, errMsg = "The request failed with: " + (statusText || jqStatus);
                     try {
                         err = JSON.parse(jq.responseText);
                         errMsg = err.message || errMsg;
