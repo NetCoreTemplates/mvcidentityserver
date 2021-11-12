@@ -10,15 +10,21 @@ using Microsoft.Extensions.DependencyInjection;
 using ServiceStack;
 using ServiceStack.Auth;
 
-namespace MyApp.Api
-{
-    public class Startup
-    {
-        public IConfiguration Configuration { get; set; }
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+[assembly: HostingStartup(typeof(MyApp.AppHost))]
 
-        public new void ConfigureServices(IServiceCollection services)
-        {
+namespace MyApp;
+
+/// <summary>
+/// To create Identity SQL Server database, change "ConnectionStrings" in appsettings.json
+///   $ dotnet ef migrations add CreateMyAppIdentitySchema
+///   $ dotnet ef database update
+/// </summary>
+public class AppHost : AppHostBase, IHostingStartup
+{
+    public void Configure(IWebHostBuilder builder) => builder
+        .ConfigureServices((context, services) => {
+            var config = context.Configuration;
+
             services.AddMvcCore(options => options.EnableEndpointRouting = false)
                 .AddAuthorization()
                 .AddNewtonsoftJson();
@@ -30,56 +36,47 @@ namespace MyApp.Api
 
                     options.Audience = "api1";
                 });
-        }
-
-        public new void Configure(IApplicationBuilder app)
-        {
+        })
+        .Configure(app => {
             app.UseAuthentication();
 
-            app.UseServiceStack(new AppHost {
-                AppSettings = new NetCoreAppSettings(Configuration)
-            });
+            app.UseServiceStack(new AppHost());
             
             app.UseMvc();
-        }
-    }
+        });
 
-    public class AppHost : AppHostBase
+    public AppHost() : base(nameof(Api), typeof(AppHost).Assembly) { }
+
+    public override void Configure(Container container)
     {
-        public AppHost()
-            : base(nameof(Api), typeof(AppHost).Assembly) { }
-
-        public override void Configure(Container container)
-        {
-            SetConfig(new HostConfig {
-                DefaultRedirectPath = "/metadata"
-            });
+        SetConfig(new HostConfig {
+            DefaultRedirectPath = "/metadata"
+        });
             
-            Plugins.Add(new AuthFeature(() => new AuthUserSession(), 
-                new IAuthProvider[] {
-                    new NetCoreIdentityAuthProvider(AppSettings), 
-                }));
-        }
+        Plugins.Add(new AuthFeature(() => new AuthUserSession(), 
+            new IAuthProvider[] {
+                new NetCoreIdentityAuthProvider(AppSettings), 
+            }));
     }
+}
 
-    [Route("/servicestack-identity")]
-    public class GetIdentity : IReturn<GetIdentityResponse> { }
+[Route("/servicestack-identity")]
+public class GetIdentity : IReturn<GetIdentityResponse> { }
 
-    public class GetIdentityResponse
+public class GetIdentityResponse
+{
+    public List<Property> Claims { get; set; }
+    public AuthUserSession Session { get; set; }
+}
+
+[Authenticate]
+public class IdentityService : Service
+{
+    public object Any(GetIdentity request)
     {
-        public List<Property> Claims { get; set; }
-        public AuthUserSession Session { get; set; }
-    }
-
-    [Authenticate]
-    public class IdentityService : Service
-    {
-        public object Any(GetIdentity request)
-        {
-            return new GetIdentityResponse {
-                Claims = Request.GetClaims().Map(x => new Property { Name = x.Type, Value = x.Value }),
-                Session = SessionAs<AuthUserSession>(),
-            };
-        }
+        return new GetIdentityResponse {
+            Claims = Request.GetClaims().Map(x => new Property { Name = x.Type, Value = x.Value }),
+            Session = SessionAs<AuthUserSession>(),
+        };
     }
 }

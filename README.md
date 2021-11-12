@@ -1,6 +1,6 @@
 # mvcidentityserver
 
-.NET 5.0 MVC Website integrated with IdentityServer4 Auth and ServiceStack
+.NET 6.0 MVC Website integrated with IdentityServer4 Auth and ServiceStack
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/mvcidentityserver.png)
 
